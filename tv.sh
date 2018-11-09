@@ -1,20 +1,24 @@
-#!/bin/sh
+#!/bin/bash
 
-oldStatus=-1
-newStatus=0
+oldStatus=-2
 
-while (true); do 
-  curl -s -m 5 http://${TV}:8080 > /dev/null
+while (true); do
+  curl -s -m 1 http://${TV}:8080 > /dev/null
   status=$?
-  if [ $oldStatus != $status ] 
+  if [ $status != "0" ]
+  then
+    status=-1
+  fi
+
+  if [ $oldStatus != $status ]
   then
     oldStatus=$status
-    if [ $status == "0" ] 
+    if [ $status == "0" ]
     then
-  	echo "ON"
+  	  echo "ON"
     else
-  	echo "OFF"
+  	  echo "OFF"
     fi
   fi
-  sleep 1;
+  sleep 5;
 done
